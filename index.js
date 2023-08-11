@@ -63,21 +63,33 @@ async function start(client) {
     }
 
     if (body.startsWith('!tagall')) {
-      if (!isGroupMsg) return urbae.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
-					if (!isGroupAdmins & !isOwnerB) return urbae.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
-					const textInfo = q
-					const namagcnih = name
-					const memchu = chat.groupMetadata.participants.length
-					const groupMem = await urbae.getGroupMembers(groupId)
-					let hehex = `Name Group : *${namagcnih}*\n\nTotal Members : *${memchu}*\n\n╔══✪〘 Mention All 〙✪══\n╠\n`
-					for (let i = 0; i < groupMem.length; i++) {
-						hehex += `╠➥`
-						hehex += ` @${groupMem[i].id.replace(/@c.us/g, '')}\n`
-					}
-					hehex += '╠\n╚═〘 *B O T  C R Y P T O* 〙'
-					await urbae.sendTextWithMentions(from, `Info dari : @${sender.id.replace(/@c.us/g, '')}\n\n` + textInfo + '\n\n' + hehex)
-					break
+    if (!isGroupMsg) {
+        return urbae.reply(from, 'Maaf, perintah ini hanya dapat digunakan di dalam grup!', id);
     }
+
+    if (!isGroupAdmins && !isOwnerB) {
+        return urbae.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id);
+    }
+
+    const textInfo = q;
+    const namagcnih = name;
+    const memchu = chat.groupMetadata.participants.length;
+    const groupMem = await urbae.getGroupMembers(groupId);
+
+    let hehex = `Nama Grup: *${namagcnih}*\nTotal Anggota: *${memchu}*\n╔══✪〘 Mention Semua 〙✪══\n`;
+
+    for (let i = 0; i < groupMem.length; i++) {
+        hehex += `╠➥ @${groupMem[i].id.replace(/@c.us/g, '')}\n`;
+    }
+
+    hehex += '╚═〘 *BOT CRYPTO* 〙';
+
+    const senderId = sender.id.replace(/@c.us/g, '');
+    const infoMessage = `Info dari: @${senderId}\n\n${textInfo}\n\n${hehex}`;
+
+    await urbae.sendTextWithMentions(from, infoMessage);
+}
+
    
     if (body === 'jepe' || body.startsWith('!hibot ')) {
   const userInput = body.slice(body.indexOf(' ') + 1).trim(); // Menghapus kata kunci perintah dari input pengguna dan menghapus spasi ekstra
