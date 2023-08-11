@@ -58,38 +58,31 @@ async function start(client) {
     }
 
     function isAllowedUser(userId) {
-      const allowedUsers = ['6283168231623@c.us', '6283168231623@c.us'];
+      const allowedUsers = ['6287852378574@c.us', '6289630822904@c.us'];
       return allowedUsers.includes(userId);
     }
 
     if (body.startsWith('!tagall')) {
-    if (!isGroupMsg) {
-        return urbae.reply(from, 'Maaf, perintah ini hanya dapat digunakan di dalam grup!', id);
+      const isGroup = chat.isGroup;
+
+      if (isGroup) {
+        if (isAllowedUser(sender.id)) {
+          const groupId = from;
+          const groupMembers = await client.getGroupMembers(groupId);
+
+          let taggedMessage = 'Hello everyone, you have been tagged:\n';
+          for (let member of groupMembers) {
+            taggedMessage += `@${member.id.replace('@c.us', '')} `;
+          }
+
+          await client.sendTextWithMentions(from, taggedMessage);
+        } else {
+          await client.sendText(from, 'Sorry, only admins can use this command.');
+        }
+      } else {
+        await client.sendText(from, 'Sorry, this command can only be used in groups.');
+      }
     }
-
-    if (!isGroupAdmins && !isOwnerB) {
-        return urbae.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id);
-    }
-
-    const textInfo = q;
-    const namagcnih = name;
-    const memchu = chat.groupMetadata.participants.length;
-    const groupMem = await urbae.getGroupMembers(groupId);
-
-    let hehex = `Nama Grup: *${namagcnih}*\nTotal Anggota: *${memchu}*\n╔══✪〘 Mention Semua 〙✪══\n`;
-
-    for (let i = 0; i < groupMem.length; i++) {
-        hehex += `╠➥ @${groupMem[i].id.replace(/@c.us/g, '')}\n`;
-    }
-
-    hehex += '╚═〘 *BOT CRYPTO* 〙';
-
-    const senderId = sender.id.replace(/@c.us/g, '');
-    const infoMessage = `Info dari: @${senderId}\n\n${textInfo}\n\n${hehex}`;
-
-    await urbae.sendTextWithMentions(from, infoMessage);
-}
-
    
     if (body === 'jepe' || body.startsWith('!hibot ')) {
   const userInput = body.slice(body.indexOf(' ') + 1).trim(); // Menghapus kata kunci perintah dari input pengguna dan menghapus spasi ekstra
