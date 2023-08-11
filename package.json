@@ -1,0 +1,14 @@
+{
+  "name": "tagall-bot",
+  "version": "1.0.0",
+  "description": "A WhatsApp bot to tag all members in a group",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@open-wa/wa-automate": "latest",
+    "axios": "^1.4.0",
+    "openai": "^3.3.0"
+  }
+}
